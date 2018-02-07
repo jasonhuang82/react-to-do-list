@@ -1,24 +1,24 @@
 // 最大統整的元件 最大的爺爺
 // css import
-import "bootstrap/dist/css/bootstrap.min.css";
-import styles from "../css.scss";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import styles from '../css.scss';
 
 // javascript import
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import CSSModules from "react-css-modules";
+import CSSModules from 'react-css-modules';
 import TodoAddForm from './TodoAddForm';
 import TodoEditForm from './TodoEditForm';
 import TodoSearchForm from './TodoSearchForm';
-import TodoSelectSort from "./TodoSelectSort";
+import TodoSelectSort from './TodoSelectSort';
 import TodoItem from './TodoItem';
 import ToDoList from './ToDoList';
 
 // es7 非同步
-import "babel-polyfill";
+import 'babel-polyfill';
 
 
-const severUrl = `http://localhost:5555/items`; // server port
+const severUrl = 'http://localhost:5555/items'; // server port
 
 class Module extends Component {
 
@@ -29,16 +29,16 @@ class Module extends Component {
         'handleServerItemRemove',
         'handleServerItemAdd', 
         'handleServerItemsLoad',
-        "sortTypeChange",
-        "renderListArr",
-        "searchFilterText",
-        "onItemFilter",
-        "updateCompleteState",
-        "updateListItemEditState",
-        "updateListItem",
-        "removeListItem",
-        "addListItem",
-        "bindThis"
+        'sortTypeChange',
+        'renderListArr',
+        'searchFilterText',
+        'onItemFilter',
+        'updateCompleteState',
+        'updateListItemEditState',
+        'updateListItem',
+        'removeListItem',
+        'addListItem',
+        'bindThis'
         ],
         titleName: 'To Do List'
     };
@@ -53,44 +53,49 @@ class Module extends Component {
             listArr: [
                 {
                 id: 1,
-                title: "apple",
+                title: 'apple',
                 isCompleted: false,
                 isEditing: false
                 },
                 {
                 id: 2,
-                title: "orange",
+                title: 'orange',
                 isCompleted: false,
                 isEditing: false
                 },
                 {
                 id: 3,
-                title: "林俊傑",
+                title: '林俊傑',
                 isCompleted: false,
                 isEditing: false
                 },
                 {
                 id: 4,
-                title: "陳奕迅",
+                title: '陳奕迅',
                 isCompleted: false,
                 isEditing: false
                 },
                 {
                 id: 5,
-                title: "周杰倫",
+                title: '周杰倫',
                 isCompleted: false,
                 isEditing: false
                 }
             ],
             isSearching: false, // 是否為搜尋狀態
-            listState: "", // 狀態文字
-            sortType: "" // 排序模式
+            listState: '', // 狀態文字
+            sortType: '' // 排序模式
         };
         this.isFilteringOut = false; // 過濾已完成
         this.cloneListArr = [...this.state.listArr]; // 複製出的陣列用於render 畫面
-        this.searchText = ""; // 搜尋文字
-        this.stateCopyText = ""; // 狀態文字
+        this.searchText = ''; // 搜尋文字
+        this.stateCopyText = ''; // 狀態文字
     }
+
+    // testFun = ()=>{ // can use arrow function in prototype
+    //     console.log('click Hello world');
+        
+    // }
 
   // ===== 將所有function 做bind(this) =====
     bindThis() {
@@ -100,7 +105,7 @@ class Module extends Component {
     componentWillMount() {
         // Component將要被mount在畫面上時，會執行這個方法，會發生在第一次render()之前，
         // 也因為在會在render()之前，所以在這邊設定任何state也就不會觸發re-render
-        console.log("componentWillMount");
+        console.log('componentWillMount');
         this.handleServerItemsLoad();
         this.bindThis();
     }
@@ -109,7 +114,7 @@ class Module extends Component {
         // 接收到新的props和state時，re-render之前
         // 會去接收 setState過來的 props or State 存在參數裡，也就是若是需要使用剛剛setState來的資料就需要用參數接過來
         // 只有使用this.state.xx 會只抓到當下未更新的state
-        console.log("componentWillUpdate");
+        console.log('componentWillUpdate');
         this.renderListArr(nextState);
     }
 
@@ -196,7 +201,7 @@ class Module extends Component {
 
   // ===== 移除項目 =====
     removeListItem(itemId) {
-        let isCheck = confirm("確定刪除?");
+        let isCheck = confirm('確定刪除?');
         if (isCheck) {
             let newArr = [...this.state.listArr];
             let index = this.findIndexById(newArr, itemId);
@@ -215,7 +220,7 @@ class Module extends Component {
             this.handleServerItemRemove(itemId);
         } else {
         this.setState({
-            listState: ""
+            listState: ''
         });
         }
     }
@@ -268,14 +273,14 @@ class Module extends Component {
                         return new Promise(resolve => {
                             //作POST
                             fetch(`${severUrl}/${item.id}`, {
-                            method: "PUT",
+                            method: 'PUT',
                             headers: {
-                                "Content-Type": "application/json"
+                                'Content-Type': 'application/json'
                             },
                             body: JSON.stringify(item)
                             })
                             .then(()=>{
-                                console.log("fetch time", currentIndex);
+                                console.log('fetch time', currentIndex);
                                 if (currentIndex === newItems.length - 1) {
                                     console.log('final fetch');
                                     
@@ -303,20 +308,20 @@ class Module extends Component {
         // 第一步先在搜尋狀態把複製完的陣列作搜尋處理，若沒有就呈現原始資料
         // 第二關依照不管事搜尋完結果或原始資料作排序動作，最後將整理完的陣列放在畫面
         let searchword = e.target.value;
-        if (searchword !== "" && searchword !== undefined && searchword !== null) {
-        console.log("isSearching");
+        if (searchword !== '' && searchword !== undefined && searchword !== null) {
+        console.log('isSearching');
         this.searchText = searchword; // 填入搜尋文字
         this.setState({ isSearching: true });
         } else {
-        console.log("not isSearching");
-        this.searchText = "";
+        console.log('not isSearching');
+        this.searchText = '';
         this.setState({ isSearching: false });
         }
     }
 
   // 排序 功能 在 render 之前的事件作統一排序動作預處理
     sortTypeChange(sortTypeString) {
-        if (sortTypeString !== "" && sortTypeString && sortTypeString !== null) {
+        if (sortTypeString !== '' && sortTypeString && sortTypeString !== null) {
         this.setState({ sortType: sortTypeString });
         }
     }
@@ -338,23 +343,23 @@ class Module extends Component {
         let newItems = [...nextState.listArr];
         if (isSearching) {
         let searchword = this.searchText;
-        let reg = new RegExp(searchword, "i");
+        let reg = new RegExp(searchword, 'i');
         // newItems = newItems.filter(item => item.title.indexOf(searchword) !== -1);
         newItems = newItems.filter(item => reg.test(item.title));
         }
 
         let sortType = nextState.sortType;
-        if (sortType === "asc") {
+        if (sortType === 'asc') {
             //按筆劃從少到多排序
             newItems = newItems.sort((a, b) =>
-                a.title.localeCompare(b.title, "zh-Hans-TW-u-co-stroke")
+                a.title.localeCompare(b.title, 'zh-Hans-TW-u-co-stroke')
             );
         }
 
-        if (sortType === "desc") {
+        if (sortType === 'desc') {
             //按筆劃從多到少排序
             newItems = newItems.sort((a, b) =>
-                b.title.localeCompare(a.title, "zh-Hans-TW-u-co-stroke")
+                b.title.localeCompare(a.title, 'zh-Hans-TW-u-co-stroke')
             );
         }
         this.cloneListArr = newItems; // 複製出的陣列用於render 畫面
@@ -362,10 +367,10 @@ class Module extends Component {
 
   // Load Data From Server 當每次修改都是去更新 db json ，然後再呼叫這個方法去重render到畫面
     handleServerItemsLoad() {
-        console.log("handleServerItemsLoad");
+        console.log('handleServerItemsLoad');
         
         fetch(`${severUrl}`, {
-        method: "GET"
+        method: 'GET'
         })
         .then(response => {
             //ok 代表狀態碼在範圍 200-299
@@ -389,9 +394,9 @@ class Module extends Component {
     handleServerItemAdd(addItem) {
         //作POST
         fetch(`${severUrl}`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify(addItem)
         })
@@ -409,9 +414,9 @@ class Module extends Component {
   // handleServerItemRemove to server
     handleServerItemRemove(id){
         fetch(`${severUrl}/${id}`, {
-            method: "DELETE",
+            method: 'DELETE',
             headers: {
-                "Content-Type": "application/json"
+                'Content-Type': 'application/json'
             }
         })
         .then(response => {
@@ -450,23 +455,23 @@ class Module extends Component {
   // ===== 畫面 =====
     render() {
         return (
-            <div styleName="to-do-list-app">
+            <div styleName='to-do-list-app'>
                 <div>
                     <h1>{this.props.titleName}</h1>
                     <h5>{this.state.listArr.filter(item=>item.isCompleted === false).length}項未完成代辦事項</h5>
-                    <div className="row">
-                        <div className="col-sm-6 form-group row">
-                            <label className="col-sm-3 col-form-label">搜尋文字:</label>
-                            <div className="col-sm-9">
+                    <div className='row'>
+                        <div className='col-sm-6 form-group row'>
+                            <label className='col-sm-3 col-form-label'>搜尋文字:</label>
+                            <div className='col-sm-9'>
                                 <TodoSearchForm
                                 searchFilterText={this.searchFilterText}
                                 isDisbleSearch={this.state.listArr.length <= 0}
                                 />
                             </div>
                         </div>
-                        <div className="col-sm-6 form-group row">
-                            <label className="col-sm-3 col-form-label">增加項目:</label>
-                            <div className="col-sm-9">
+                        <div className='col-sm-6 form-group row'>
+                            <label className='col-sm-3 col-form-label'>增加項目:</label>
+                            <div className='col-sm-9'>
                                 <TodoAddForm
                                 placeholderText="請輸入文字..."
                                 addListItem={this.addListItem}
@@ -479,7 +484,7 @@ class Module extends Component {
                     <div>
                         <label>排序筆畫 : </label>
                         
-                        <TodoSelectSort sortReg="none"
+                        <TodoSelectSort sortReg='none'
                                         sortTypeChange={this.sortTypeChange}
                                         isDisbleSort={this.state.listArr.length <= 0}
                         />
@@ -529,16 +534,16 @@ class Module extends Component {
 //     'handleServerItemRemove',
 //     'handleServerItemAdd', 
 //     'handleServerItemsLoad',
-//     "sortTypeChange",
-//     "renderListArr",
-//     "searchFilterText",
-//     "onItemFilter",
-//     "updateCompleteState",
-//     "updateListItemEditState",
-//     "updateListItem",
-//     "removeListItem",
-//     "addListItem",
-//     "bindThis"
+//     'sortTypeChange',
+//     'renderListArr',
+//     'searchFilterText',
+//     'onItemFilter',
+//     'updateCompleteState',
+//     'updateListItemEditState',
+//     'updateListItem',
+//     'removeListItem',
+//     'addListItem',
+//     'bindThis'
 //   ],
 //   titleName: 'To Do List'
 // };
