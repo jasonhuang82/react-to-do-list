@@ -15,7 +15,7 @@
     {
       "id": 3,
       "title": "丟垃圾",
-      "isCompleted": true,
+      "isCompleted": false,
       "isEditing": false
     },
     {

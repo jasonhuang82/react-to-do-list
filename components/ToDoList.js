@@ -1,31 +1,33 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ToDoCheckbox from './ToDoCheckbox';
 
-// 只render畫面可使用函數式組件，但若有需要函數操作建議使用 class 組件
-const ToDoList = ({ children, onItemFilter,allCompleteItems}: ToDoListProps) => {
-    const allCompeleClick = function (e){
-        // console.log("isAllComplete ->", e.target.checked);
-        allCompleteItems(e.target.checked);
+export default class ToDoList extends React.Component {
+    constructor(props) {
+        // super是呼叫上層父類別的建構式
+        super(props);
+        this.state = {
+            isCheck: false
+        }
     }
-    return (
-        <div>
-            <label>
-                <input  type="checkbox"
-                        onClick={onItemFilter}
+
+    allCompeleClick(e){
+        this.props.allCompleteItems(e.target.checked);
+        this.setState({ isCheck: e.target.checked})
+    }
+    render() {
+        return (
+            <div>
+                <ToDoCheckbox inputText="過濾已完成項目"
+                    checkClick={this.props.onItemFilter}
                 />
-                <span>過濾已完成項目</span>
-            </label>
-            <label>
-                <input  type="checkbox"
-                        onClick={allCompeleClick}
-                       
+                <ToDoCheckbox inputText={this.state.isCheck?'全部取消':'全部完成'}
+                    checkClick={this.allCompeleClick.bind(this)}
                 />
-                <span>全部完成</span>
-            </label>
-            <ul className="to-do-list">
-                { children }
-            </ul>
-        </div>
-    )
-};
-export default ToDoList;
+                <ul className="to-do-list">
+                    {this.props.children}
+                </ul>
+            </div>
+        );
+    }
+}
